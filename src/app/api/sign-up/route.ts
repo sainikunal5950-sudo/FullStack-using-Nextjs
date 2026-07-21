@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/dbConnect";
+import dbConnect from "@/src/lib/dbConnect";
 import UserModel from "@/src/models/user";
 import bcrypt from "bcrypt";
 import { sendVerficationEmail } from "@/helpers/SendVerficationemail";
@@ -9,12 +9,10 @@ export async function POST(request: Request) {
     try {
         const { username, email, password } = await request.json();  // ye 3 chij nikali hmne 
         // abb dekhege hmara user exist krta hai i nhi 
-
         const existingUserVerifiedByUsername = await UserModel.findOne({
             username,
             isVerified: true
         })
-
         if (existingUserVerifiedByUsername) {
             return Response.json(
                 {
@@ -26,13 +24,10 @@ export async function POST(request: Request) {
                 }
             )
         }
-
         const existingUserByemail = await UserModel.findOne({
             email
         })
-
         const verifyCode = Math.floor(10000 + Math.random() * 900000).toString();
-
         if (existingUserByemail) {
             if (existingUserByemail.isVerified) {
                 return Response.json({
@@ -43,7 +38,6 @@ export async function POST(request: Request) {
                         status: 500
                     }
                 )
-
             } else {
                 const hashedPassword = await bcrypt.hash(password, 10);
                 existingUserByemail.password = hashedPassword;
@@ -66,16 +60,13 @@ export async function POST(request: Request) {
                 messages: []
             })
             await newUser.save();
-
         }
-
         // abb hm send verification email krege 
         const emailResponse = await sendVerficationEmail(
             email,
             username,
             verifyCode
         )
-
         if (!emailResponse.success) {
             return Response.json({
                 success: false,
@@ -86,7 +77,6 @@ export async function POST(request: Request) {
                 }
             )
         }
-
         return Response.json({
             success: false,
             message: "User regesitred suuccesfully"
@@ -95,13 +85,6 @@ export async function POST(request: Request) {
                 status: 500
             }
         )
-
-
-
-
-
-
-
     } catch (error) {
         console.error("Error regersetring user", error)
         return Response.json(
