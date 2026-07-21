@@ -49,18 +49,19 @@ export const authOptions: NextAuthOptions = {
                 catch (err: any) {
 
                 }
-
-                // yaha tu apna logic likhega
-                // 1. dbConnect()
-                // 2. User find karega
-                // 3. bcrypt.compare karega
-                // 4. user return karega
-
-
-
             }
         })
-    ]
+    ],
+    callbacks: {
+        async jwt({ token, user }) {
+            token.username = user.username
+            return token
+        },
+        async session({ session, token }) {
+            return session
+        }
+    }
+
 };
 
 
