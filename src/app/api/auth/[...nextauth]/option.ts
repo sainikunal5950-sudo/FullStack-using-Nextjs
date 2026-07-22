@@ -54,12 +54,31 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }) {
-            token.username = user.username
+            if (user) {
+                token.id = user._id?.toString()
+                token.isVerified = user.isVerified;
+                token.isAcceptingMessages = user.isAcceptingMessage;
+                token.username = user.username;
+            }
             return token
         },
         async session({ session, token }) {
-            return session
-        }
+            if (token) {
+                session.user._id = token._id
+                session.user.isVerified = token.isVerified
+                session.user.isAcceptingMessage = token.isAcceptingMessages
+                session.user.username = token.username
+            }
+            return session;
+        },
+    },
+    pages: {
+        signIn: '/sign-in'
+    },
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+
     }
 
 };
