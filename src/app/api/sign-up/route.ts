@@ -1,7 +1,8 @@
 import dbConnect from "@/src/lib/dbConnect";
 import UserModel from "@/src/models/user";
 import bcrypt from "bcrypt";
-import { sendVerficationEmail } from "@/helpers/SendVerficationemail";
+// import { sendVerficationEmail } from "@/helpers/SendVerficationemail";
+import { sendVerficationEmail } from "@/src/helpers/SendVerficationemail";
 
 export async function POST(request: Request) {
     await dbConnect();
@@ -78,11 +79,11 @@ export async function POST(request: Request) {
             )
         }
         return Response.json({
-            success: false,
+            success: true,
             message: "User regesitred suuccesfully"
         },
             {
-                status: 500
+                status: 200
             }
         )
     } catch (error) {

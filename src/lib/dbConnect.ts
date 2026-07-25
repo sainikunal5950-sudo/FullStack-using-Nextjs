@@ -5,6 +5,9 @@ type ConnectionObject = {
 }
 const connection: ConnectionObject = {}
 async function dbConnect(): Promise<void> {
+
+    console.log("URI:", process.env.MONGODB_URI);
+
     if (connection.isConnected) {
         console.log("Already Database is Connected ");
         return;
