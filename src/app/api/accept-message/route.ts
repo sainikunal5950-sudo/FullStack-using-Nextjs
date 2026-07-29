@@ -79,8 +79,6 @@ export async function POST(request: Request) {
             { status: 401 }
         )
     }
-
-
 }
 
 export async function GET(request: Request) {
@@ -101,11 +99,7 @@ export async function GET(request: Request) {
 
     const userId = user._id;
     try {
-
-
-
         const foundUser = await UserModel.findById(userId);
-
         if (!foundUser) {
             return Response.json(
                 {
@@ -115,7 +109,6 @@ export async function GET(request: Request) {
                 { status: 404 }
             )
         }
-
         return Response.json(
             {
                 success: true,
